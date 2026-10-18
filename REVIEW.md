@@ -1,5 +1,7 @@
 # Website review — 18 October 2026
 
+Current deployment structure: root `index.html` and `images/`, published directly from `main / (root)`. No custom workflow or build step is needed. Earlier build references below record validation performed during development.
+
 **Recommendation: CONDITIONAL GO, pending owner content approval and browser verification.** The public-facing name is now Hunter, as requested by the owner. The private application is not being renamed or distributed. The owner will complete desktop/mobile browser verification. No public repository was created, no push was performed and Pages was not enabled.
 
 ## Content and public claims
@@ -44,10 +46,12 @@ The site has no framework build, package installation or JavaScript tests to run
 
 All 12 prepared source files match their public copies by SHA-256. Each image has descriptive alternative text and explicit source dimensions. The hero loads its main screenshot with high priority; other images use native lazy loading. The gallery and “More from Hunter” disclosure require no JavaScript, and the disclosure has visible keyboard focus styling. CSS uses the transparent-canvas bounds to display the devices at a useful size without modifying any screenshot pixels. The build totals approximately 6.77 MB, mostly screenshots; later images are deferred by native browser loading. Browser rendering will be verified by the owner, as requested.
 
-## Deployment preparation update
+## Deployment preparation — final structure
 
-The owner reviewed the site and reported that it looks good. A manual GitHub Pages workflow is now prepared at `.github/workflows/pages.yml`. It builds and validates the site before uploading only the 18 files in `dist/`. There are no push or pull-request deployment triggers; only manual dispatches from `main` can deploy. The workflow follows GitHub's current official Pages action versions: checkout v6, configure-pages v5, upload-pages-artifact v4 and deploy-pages v4.
+The owner approved the proposed site and requested standard GitHub Pages branch deployment. `index.html`, `style.css` and `.nojekyll` now live at the repository root; public assets live in `images/`. The former `site/` directory, custom Actions deployment workflow and build script have been removed. The optional local check script validates the root website directly. No build is needed for publication.
 
-Read-only GitHub checks confirmed that the website repository is already public and that Pages is already enabled with HTTPS, currently serving `main` at `/` through the legacy branch source. This corrects the earlier unverified remote state. The application repository was independently confirmed private. No GitHub settings were changed, no code was pushed, and no workflow was dispatched during preparation. PUBLICATION.md now describes switching the existing source to GitHub Actions and launching the workflow.
+Read-only checks confirmed that `knwlnd/plex-hunter-site` is public and that Pages is already configured to serve `main / (root)` with HTTPS enforced. These existing settings match the final structure. The private application repository remains private. No remote settings were changed and no push or deployment was triggered by this restructuring. Once the changes are committed and pushed, standard branch hosting will publish them automatically.
 
-Validation for this update: build and all static artifact checks pass; workflow YAML parses successfully. GitHub-hosted workflow execution remains untested until first dispatch. Owner acceptance supplies the visual review; automated browser/accessibility certification is not claimed. No licence was added, and third-party artwork remains subject to its original rights.
+Documentation and the validation script are intentionally public repository material and may also be served by root branch hosting. Only owner-prepared images are tracked; the workspace `assets/` folder remains ignored. Earlier references in this report to the staged build describe prior validation; deployment now uses the root files, with no `dist/` dependency. The screenshot copies and their redactions remain unchanged.
+
+Validation: all 18 website files pass local checks for local resource paths, anchors, semantic landmarks, image alternatives and privacy patterns; `git diff --check` passes. Owner acceptance supplies the visual review; automated browser/accessibility certification is not claimed. No licence was added.

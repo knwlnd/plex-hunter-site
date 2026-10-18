@@ -1,33 +1,23 @@
-# Hunter project website
+# Hunter
 
-A small static project page for a private, local-first media discovery companion. No framework, JavaScript, external fonts, analytics or runtime API calls.
+A static project website for a private, local-first media discovery companion. No framework, JavaScript, external fonts, analytics or runtime API calls.
 
-**Deployment prepared.** The owner has approved the proposed site. See [PUBLICATION.md](PUBLICATION.md) for the manual GitHub Pages workflow and source setting. Pages is currently enabled from the repository root; this preparation has not changed its settings or triggered a deployment. See [REVIEW.md](REVIEW.md) for validation and attribution details.
+## GitHub Pages
 
-## Preview
+Publish directly from **main / (root)** using **Settings → Pages → Build and deployment → Source: Deploy from a branch**. No build step, custom Actions workflow or separate deployment branch is needed.
 
-```sh
-python3 scripts/build.py
-python3 scripts/check.py
-python3 -m http.server 8000 --bind 127.0.0.1 --directory dist
-```
+Website: https://knwlnd.github.io/plex-hunter-site/
 
-Open http://127.0.0.1:8000/ in a browser. No installation is needed. `dist/index.html` can also be opened directly.
+- `index.html`, `style.css`, `.nojekyll`: the website at the repository root.
+- `images/`: favicon, sharing image, TMDB attribution logo and 12 owner-prepared screenshots.
+- `scripts/check.py`: optional local validation; not needed by GitHub Pages.
+- `PUBLICATION.md`: deployment instructions.
+- `REVIEW.md`: content, attribution and validation review.
 
-## Layout
+Open `index.html` directly in a browser to preview. Run `python3 scripts/check.py` to validate the website files and links.
 
-- `site/`: public HTML, CSS, favicon, original social image and official TMDB attribution logo, plus 12 owner-prepared screenshots.
-- `scripts/`: dependency-free build and validation tools.
-- `dist/`: generated publishable site (ignored).
-- `assets/`: locally supplied, owner-prepared screenshots (ignored; selected public copies live in `site/assets/`).
-- `REVIEW.md`: content, privacy, attribution and validation review.
-- `.github/workflows/pages.yml`: manual Pages build, validation and deployment of `dist/` only.
-- `PUBLICATION.md`: exact Pages source setting and deployment steps.
-
-The owner confirmed the supplied captures have been masked appropriately, renamed in-image and fitted with device frames, and contain no private addresses or credentials. All 12 are now included under descriptive filenames in `site/assets/`, byte-for-byte identical to the supplied versions. The hero uses macOS/iOS Movies captures; a responsive gallery covers the collection, with six additional captures under “More from Hunter”. Images below the hero load lazily. No further blur or image alterations were applied. Do not serve the workspace root.
+The workspace `assets/` folder is ignored and is not part of the Git repository. The prepared public screenshot copies are in `images/`. Their masking and device frames are unchanged from the owner-supplied files.
 
 ## Licensing
 
-No source licence has been applied. MIT is proposed for the original website code, subject to the owner's approval. A future licence must exclude provider trademarks/logos and third-party imagery. No licence or changes apply to the private application.
-
-The public-facing name is **Hunter**. The private application name remains unchanged. The existing local folder, Git remote and proposed Pages path retain `plex-hunter-site`; no remote rename has been performed.
+No source licence has been applied. MIT is proposed for original website code, subject to approval, with provider branding and third-party imagery excluded. The private application and its name are unchanged; the public-facing name is Hunter.
