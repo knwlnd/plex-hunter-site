@@ -1,31 +1,56 @@
-# GitHub Pages publication — after approval only
+# Deploy Hunter with GitHub Pages
 
-Target: `knwlnd/plex-hunter-site`, a separate website repository. Do not change the private application repository. The checkout already has an origin pointing to this target; that does not establish its current existence, visibility or Pages status. This task did not change any remote settings.
+## Current state
 
-## Release gate
+Read-only GitHub checks on 18 October 2026 confirmed:
 
-1. Review the public-facing **Hunter** branding. The private application name remains unchanged. The current proposed Pages path retains the existing repository slug; if a new public repository name is chosen, update canonical and social URLs before release.
-2. Approve the website content, any edited screenshot selections, provider credits and proposed source licence (or approve retaining no licence). Review any remaining Plex references and applicable attribution wording without claiming a licence that has not been granted.
-3. Review `git status`, every file to be committed and all reachable Git history. Never force-add `assets/` or the ignored local review folder.
-4. Run `python3 scripts/build.py` and `python3 scripts/check.py`. Inspect all 18 generated files. Verify desktop and mobile rendering, keyboard navigation, zoom, contrast and external links manually.
-5. Independently confirm the application repository remains private before publication. Its settings were not accessed in this task.
+- `knwlnd/plex-hunter-site` is public; its default branch is `main`.
+- Pages is already enabled at https://knwlnd.github.io/plex-hunter-site/ with HTTPS enforced.
+- Its current source is **Deploy from a branch → main → / (root)** (`build_type: legacy`, status `built`). This is the repository root, not the prepared website output in `dist/`.
+- `knwlnd/plex-hunter` remains private. No application files or settings were changed.
 
-## Exact hosting setup
+The owner approved the proposed site visually and supplied the masked screenshots. Deployment preparation does not itself launch a new deployment. No push, GitHub setting change or workflow dispatch was performed in this step.
 
-After explicit content/privacy and publication approval, use the existing dedicated site repository if it exists; otherwise create `knwlnd/plex-hunter-site` as the dedicated public repository. Never create or replace `knwlnd/plex-hunter`.
+## Prepared workflow
 
-Use a dedicated `gh-pages` branch containing **only the contents of `dist/` at its root**. Prepare that branch in a separate checkout, review its file list, then push it after approval. Keep source on `main`. Do not use the workspace root as a Pages publishing source.
+[.github/workflows/pages.yml](.github/workflows/pages.yml) runs only when manually dispatched on `main`. It builds the static website, runs validation, uploads **only `dist/`**, then deploys through the `github-pages` environment. Pushes and pull requests do not trigger this workflow. No `gh-pages` branch is needed.
 
-In the site repository: **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: gh-pages → Folder: / (root) → Save**. Keep `.nojekyll` in the published root. Enable HTTPS if offered. Do not add a custom domain.
+The build job has read-only repository permissions. Only the deployment job has Pages write and OIDC permissions. Credentials are not persisted by checkout. GitHub provides the deployment token automatically; no user secrets or API keys are needed.
 
-Expected address (not currently verified live): https://knwlnd.github.io/plex-hunter-site/
+## First deployment
 
-This branch-based setup needs no Actions workflow or build dependencies. GitHub documents [publishing source configuration](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+1. Commit and push the deployment-preparation changes to `main` in `knwlnd/plex-hunter-site`. The existing branch-based Pages configuration may rebuild the repository root on that push; the prepared Hunter deployment starts only when the manual workflow runs after the source is switched.
+2. In the website repository, open **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**. Do not choose the repository root or the private application repository.
+3. Open **Actions → Deploy Hunter to GitHub Pages → Run workflow**, select **main**, and run it.
+4. Wait for both `build` and `deploy` jobs to pass. Open the URL shown by the deployment environment: https://knwlnd.github.io/plex-hunter-site/.
 
-## After deployment
+If using the GitHub CLI after the workflow has been pushed, the corresponding source-setting and manual deployment commands are:
 
-- Verify the actual public URL returns success and the page, CSS, screenshots, favicon, social image and TMDB logo load under the repository path.
-- Check all anchor and provider links, desktop and mobile widths, keyboard focus, reduced motion and 200% zoom.
-- Inspect the published branch and browser network requests. Only the 18 reviewed files should be served; no private assets, API requests or application links.
-- Verify the private application repository is still private and unchanged.
-- Only after the public page is live and validated, recommend using its actual URL as the MusicBrainz User-Agent contact URL. Do not change production configuration as part of this website task.
+```sh
+gh api --method PUT repos/knwlnd/plex-hunter-site/pages -f build_type=workflow
+gh workflow run pages.yml --repo knwlnd/plex-hunter-site --ref main
+gh run list --repo knwlnd/plex-hunter-site --workflow pages.yml --limit 5
+```
+
+To avoid another root-based build during the first push, switch Pages to GitHub Actions immediately before pushing the workflow, then run it afterwards. Changing the source alone does not run this manual workflow. No repository visibility changes are needed.
+
+## Local checks
+
+```sh
+python3 scripts/build.py
+python3 scripts/check.py
+```
+
+The reviewed output has 18 files: the HTML, CSS, favicon, social image, TMDB logo, `.nojekyll` and 12 owner-prepared screenshots. The ignored workspace `assets/`, scripts, review documents and Git metadata are not uploaded as the site artifact.
+
+## Verify the deployment
+
+- Confirm the public root shows Hunter rather than the repository README.
+- Check navigation, the hero, screenshots, “More from Hunter”, provider links, favicon and social metadata.
+- Check desktop/mobile layouts, keyboard focus and zoom in your browsers.
+- Inspect the workflow artifact: only the 18 expected public files should be present.
+- Leave the private application, production configuration and MusicBrainz User-Agent unchanged. After the public page is validated, its actual URL can be recommended separately as the contact URL.
+
+Future releases use the same manual workflow after source changes have been pushed to `main`. No automatic publishing has been added.
+
+Reference: [GitHub’s custom Pages workflow documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).

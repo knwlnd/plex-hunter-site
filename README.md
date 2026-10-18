@@ -2,7 +2,7 @@
 
 A small static project page for a private, local-first media discovery companion. No framework, JavaScript, external fonts, analytics or runtime API calls.
 
-**Local draft only. Do not publish yet.** See [REVIEW.md](REVIEW.md) for the content review, privacy boundary and validation limits. Nothing has been pushed or deployed by this implementation.
+**Deployment prepared.** The owner has approved the proposed site. See [PUBLICATION.md](PUBLICATION.md) for the manual GitHub Pages workflow and source setting. Pages is currently enabled from the repository root; this preparation has not changed its settings or triggered a deployment. See [REVIEW.md](REVIEW.md) for validation and attribution details.
 
 ## Preview
 
@@ -21,7 +21,8 @@ Open http://127.0.0.1:8000/ in a browser. No installation is needed. `dist/index
 - `dist/`: generated publishable site (ignored).
 - `assets/`: locally supplied, owner-prepared screenshots (ignored; selected public copies live in `site/assets/`).
 - `REVIEW.md`: content, privacy, attribution and validation review.
-- `PUBLICATION.md`: publication steps to carry out only after approval.
+- `.github/workflows/pages.yml`: manual Pages build, validation and deployment of `dist/` only.
+- `PUBLICATION.md`: exact Pages source setting and deployment steps.
 
 The owner confirmed the supplied captures have been masked appropriately, renamed in-image and fitted with device frames, and contain no private addresses or credentials. All 12 are now included under descriptive filenames in `site/assets/`, byte-for-byte identical to the supplied versions. The hero uses macOS/iOS Movies captures; a responsive gallery covers the collection, with six additional captures under “More from Hunter”. Images below the hero load lazily. No further blur or image alterations were applied. Do not serve the workspace root.
 

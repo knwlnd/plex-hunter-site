@@ -43,3 +43,11 @@ The site has no framework build, package installation or JavaScript tests to run
 ## Screenshot integration validation
 
 All 12 prepared source files match their public copies by SHA-256. Each image has descriptive alternative text and explicit source dimensions. The hero loads its main screenshot with high priority; other images use native lazy loading. The gallery and “More from Hunter” disclosure require no JavaScript, and the disclosure has visible keyboard focus styling. CSS uses the transparent-canvas bounds to display the devices at a useful size without modifying any screenshot pixels. The build totals approximately 6.77 MB, mostly screenshots; later images are deferred by native browser loading. Browser rendering will be verified by the owner, as requested.
+
+## Deployment preparation update
+
+The owner reviewed the site and reported that it looks good. A manual GitHub Pages workflow is now prepared at `.github/workflows/pages.yml`. It builds and validates the site before uploading only the 18 files in `dist/`. There are no push or pull-request deployment triggers; only manual dispatches from `main` can deploy. The workflow follows GitHub's current official Pages action versions: checkout v6, configure-pages v5, upload-pages-artifact v4 and deploy-pages v4.
+
+Read-only GitHub checks confirmed that the website repository is already public and that Pages is already enabled with HTTPS, currently serving `main` at `/` through the legacy branch source. This corrects the earlier unverified remote state. The application repository was independently confirmed private. No GitHub settings were changed, no code was pushed, and no workflow was dispatched during preparation. PUBLICATION.md now describes switching the existing source to GitHub Actions and launching the workflow.
+
+Validation for this update: build and all static artifact checks pass; workflow YAML parses successfully. GitHub-hosted workflow execution remains untested until first dispatch. Owner acceptance supplies the visual review; automated browser/accessibility certification is not claimed. No licence was added, and third-party artwork remains subject to its original rights.

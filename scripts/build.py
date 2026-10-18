@@ -5,7 +5,7 @@ import shutil
 root = Path(__file__).resolve().parents[1]
 source = root / 'site'
 target = root / 'dist'
-# Only overwrite our four known output files; refuse unexpected output content.
+# Only overwrite files from the public source; refuse unexpected output content.
 expected = {p.relative_to(source) for p in source.rglob('*') if p.is_file()}
 if target.exists():
     unexpected = {p.relative_to(target) for p in target.rglob('*') if p.is_file()} - expected
